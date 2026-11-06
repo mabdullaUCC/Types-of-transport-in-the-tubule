@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Transport Mechanisms</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:#c9d4c8;font-family:Verdana,"DejaVu Sans",sans-serif}
+#wrap{position:relative;max-width:1200px;margin:0 auto}
+svg{display:block;width:100%;height:auto;user-select:none}
+.pb,.mk{cursor:pointer}.pb:hover rect{fill:#ececec}
+#tip{position:absolute;display:none;max-width:290px;background:#fffbe8;color:#222;border:1px solid #8a8a70;border-radius:4px;padding:8px 10px;font-size:13px;line-height:1.4;box-shadow:0 2px 8px rgba(0,0,0,.3);pointer-events:none;z-index:5}
+</style></head><body>
+<div id="wrap">
+<svg id="fig" viewBox="0 0 2212 1582" xmlns="http://www.w3.org/2000/svg" font-family="Verdana,'DejaVu Sans',sans-serif">
+<defs>
+<linearGradient id="gg" x1="0" x2="1"><stop offset="0" stop-color="#d0d0d0"/><stop offset="1" stop-color="#b0b0b0"/></linearGradient>
+<linearGradient id="cg" x1="0" x2="1"><stop offset="0" stop-color="#a9a9a9"/><stop offset=".78" stop-color="#fafafa"/><stop offset="1" stop-color="#fff"/></linearGradient>
+<linearGradient id="bt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eeeeee"/><stop offset="1" stop-color="#c9c9c9"/></linearGradient>
+<clipPath id="cl"><rect width="560" height="610"/></clipPath>
+<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10Z" fill="#222"/></marker>
+<marker id="gh" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto"><path d="M0,0L10,5L0,10Z" fill="#b9a0ab"/></marker>
+<g id="sc" clip-path="url(#cl)">
+<rect width="435" height="610" fill="#d5efd1"/><rect x="435" width="125" height="610" fill="url(#gg)"/>
+<path d="M113,-20V54Q113,84 143,84H403Q433,84 433,54V-20Z" fill="url(#cg)" stroke="#fff" stroke-width="6"/>
+<path d="M113,630V580Q113,552 143,552H403Q433,552 433,580V630Z" fill="url(#cg)" stroke="#fff" stroke-width="6"/>
+<rect x="116" y="104" width="317" height="428" rx="36" fill="url(#cg)" stroke="#fff" stroke-width="6"/>
+<line x1="113" y1="140" x2="113" y2="500" stroke="#8d8d8d" stroke-width="3" stroke-dasharray="2 3"/>
+</g>
+<g id="chn"><rect x="-38" y="-32" width="76" height="64" rx="16" fill="#efefef" stroke="#222" stroke-width="3.5"/><path d="M-30,-14Q-12,-26 6,-14T34,-12M-32,6Q-14,-6 6,6T34,8M-28,22Q-10,12 8,22T32,22" fill="none" stroke="#333" stroke-width="3"/></g>
+</defs>
+<rect width="2212" height="1582" fill="#c9d4c8"/>
+<g fill="#111" font-size="31"><text x="1120" y="50" text-anchor="middle">Transport Mechanisms</text></g>
+<g fill="#111" font-size="28"><text x="148" y="133">This diagram shows animated representations of the transport mechanisms; play the animation for each to observe how that protein</text>
+<text x="148" y="172">facilitates movement of certain particles across the cell membrane.  Roll your cursor over each numbered circle to find out more information</text>
+<text x="148" y="210">about each panel.</text></g>
+<rect x="125" y="255" width="645" height="1327" fill="#bcc7b8"/><rect x="865" y="255" width="1275" height="1327" fill="#bfc9bb"/>
+<g fill="#111" font-size="33" text-anchor="middle"><text x="441" y="312">Channels</text><text x="1502" y="311">Transporters</text>
+<text x="445" y="435">Passive transport</text><text x="1175" y="435">Active transport (primary)</text><text x="1800" y="435">Secondary active transport</text></g>
+<g class="pb" data-g="1" transform="translate(613,284)"><rect width="112" height="48" rx="5" fill="url(#bt)" stroke="#a5a5a5" stroke-width="2"/><path class="ic" d="M46,12L46,36L68,24Z" fill="#222"/></g>
+<g class="pb" data-g="2" transform="translate(1984,284)"><rect width="112" height="48" rx="5" fill="url(#bt)" stroke="#a5a5a5" stroke-width="2"/><path class="ic" d="M46,12L46,36L68,24Z" fill="#222"/></g>
+<use href="#sc" x="167" y="494"/><use href="#sc" x="905" y="494"/><use href="#sc" x="1542" y="494"/>
+<g fill="#2f3d2d" font-size="22" font-weight="bold" dominant-baseline="central"><text x="167" y="474">Basolateral side</text><text x="727" y="474" text-anchor="end">Tubule lumen</text><text x="905" y="474">Basolateral side</text><text x="1465" y="474" text-anchor="end">Tubule lumen</text><text x="1542" y="474">Basolateral side</text><text x="2102" y="474" text-anchor="end">Tubule lumen</text></g>
+<g id="dyn"></g>
+</svg>
+<div id="tip"></div></div>
+<script>
+const NS='http://www.w3.org/2000/svg',$=s=>document.querySelector(s),dyn=$('#dyn');
+const COL={Na:'#8d8a1b',K:'#e0201b',H:'#555',B:'#555'};
+const ion=(s,x,y,fs=27,fill,anchor='middle')=>{const sub=s=='B'?`HCO<tspan dy="7" font-size="${fs*.62}">3</tspan><tspan dy="-17" font-size="${fs*.7}">-</tspan>`:`${s}<tspan dy="${-fs*.3}" font-size="${fs*.68}">+</tspan>`;
+return `<text x="${x}" y="${y}" fill="${fill||COL[s]}" font-size="${fs}" text-anchor="${anchor}" dominant-baseline="central">${sub}</text>`};
+const tx=(t,x,y,fs=24,anchor='start',fill='#333')=>`<text x="${x}" y="${y}" fill="${fill}" font-size="${fs}" text-anchor="${anchor}" dominant-baseline="central">${t}</text>`;
+const arr=(x1,y1,x2,y2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#222" stroke-width="2.4" marker-end="url(#ah)"/>`;
+const garr=(x1,y1,x2,y2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#b9a0ab" stroke-width="8" marker-end="url(#gh)"/>`;
+const mk=(n,x,y)=>`<g class="mk" data-n="${n}" transform="translate(${x},${y})"><circle r="26" fill="#fff" stroke="#d62d20" stroke-width="4"/><text fill="#d62d20" font-size="34" font-weight="bold" text-anchor="middle" dominant-baseline="central" y="2">${n}</text></g>`;
+const S1=[['Na',645,547],['Na',701,592],['Na',383,711],['Na',697,731],['Na',665,804],['K',346,867],['K',453,877],['K',382,942],['K',489,978],['K',703,961]];
+const S2=[['Na',967,577],['K',940,625],['Na',1175,704],['K',1230,673],['K',1191,769],['K',1246,824],['Na',947,825],['K',1143,881],['Na',978,897],['K',1252,938],['Na',954,999]];
+let h='';
+// gradient strips
+h+=`<g fill="#111" font-size="33" text-anchor="middle"><text x="452" y="1208">Gradients</text><text x="1193" y="1208">Gradients</text><text x="1823" y="1208">Gradients</text></g>`;
+[[284,599],[1029,1345],[1655,1970]].forEach(([a,b])=>{h+=`<line x1="${a}" y1="1196" x2="${a}" y2="1525" stroke="#dfe6dc" stroke-width="5" stroke-dasharray="2 3"/><line x1="${b}" y1="1180" x2="${b}" y2="1540" stroke="#eef2ec" stroke-width="5"/>`});
+h+=garr(642,1228,548,1296)+garr(548,1398,650,1468)+ion('Na',653,1263,28)+ion('K',556,1432,28);
+h+=garr(982,1388,1084,1320)+garr(1076,1390,976,1322)+ion('K',952,1393,28)+ion('Na',1110,1391,28);
+h+=ion('Na',1593,1232,28)+garr(1608,1256,1706,1320)+garr(1698,1366,1600,1298)+ion('H',1703,1390,28);
+h+=ion('B',1878,1365,28)+ion('Na',1888,1465,28)+garr(1925,1448,2022,1386)+garr(1922,1392,2022,1452);
+// scene 1
+h+=`<g transform="translate(595,712)"><use href="#chn"/></g><g transform="translate(595,918)"><use href="#chn"/></g>`+arr(655,712,520,712)+arr(542,918,680,918);
+h+=ion('Na',632,630,22,'#555')+tx('channel',652,661,22,'middle','#555')+ion('K',535,836,22,'#555')+tx('channel',532,868,22,'middle','#555');
+// scene 2 pump
+h+=`<g id="pump" transform="translate(1018,730)"><path d="M6,0L31,-22A38,38 0 1 0 31,22Z" transform="scale(.86)" fill="#b6dfa8" stroke="#222" stroke-width="3"/><text x="0" y="2" font-size="21" text-anchor="middle" dominant-baseline="central" fill="#222">ATP</text></g>`+arr(967,698,1085,698)+arr(1072,761,960,761);
+h+=tx('Na-K',1036,646,23)+tx('ATPase',1022,677,23);
+// scene 3
+h+=`<g id="exch" transform="translate(1658,718)"><path d="M-34,0A34,34 0 0 1 34,0Z" fill="#9fd89a"/><path d="M-34,0A34,34 0 0 0 34,0Z" fill="#b2b2b2"/><circle r="34" fill="none" stroke="#333" stroke-width="3"/></g>`+arr(1597,694,1713,694)+arr(1722,738,1603,738);
+h+=tx('NaH',1570,612,27,'start','#222')+tx('Exchanger',1570,651,27,'start','#222');
+h+=`<g id="cot" transform="translate(1973,903)"><circle r="35" fill="#a8a8a8" stroke="#333" stroke-width="3"/><path d="M-30,-14H30M-34,0H34M-30,14H30M-22,26H22" stroke="#777" stroke-width="3"/></g>`+arr(1927,881,2040,881)+arr(1895,920,2040,920);
+h+=`<text x="1857" y="790" font-size="27" fill="#222" dominant-baseline="central">NaHCO<tspan dy="6" font-size="17">3</tspan></text>`+tx('cotransporter',1857,828,27,'start','#222');
+// ions (drifting)
+const ionEls=[];
+S1.concat(S2).forEach((d,i)=>{h+=`<g class="dr" data-g="${i<S1.length?1:2}" data-i="${i}">${ion(d[0],d[1],d[2],27)}</g>`});
+// tokens
+const FL=[[1,'Na',[690,712],[430,712]],[1,'K',[470,918],[720,918]],[2,'Na',[1095,761],[945,761]],[2,'K',[945,698],[1095,698]],[2,'Na',[1590,694],[1722,694]],[2,'H',[1730,738],[1595,738]],[2,'Na',[1915,881],[2050,881]],[2,'B',[1890,920],[2050,920]]];
+FL.forEach((f,i)=>{[0,.5].forEach(p=>{h+=`<g class="tk" data-f="${i}" data-p="${p}" style="display:none">${ion(f[1],0,0,32).replace('<text','<text paint-order="stroke" stroke="#fff" stroke-opacity=".7" stroke-width="6"')}</g>`})});
+h+=mk(1,527,648)+mk(2,975,647)+mk(3,1759,649)+mk(4,1818,817);
+dyn.innerHTML=h;
+// animation
+const st={1:0,2:0},dr=[...document.querySelectorAll('.dr')],tk=[...document.querySelectorAll('.tk')];
+const pl=[['#pump',1018,730],['#exch',1658,718],['#cot',1973,903]].map(([s,x,y])=>({el:$(s),x,y}));
+function loop(ts){const t=ts/1000;
+dr.forEach(d=>{const i=+d.dataset.i;d.setAttribute('transform',st[d.dataset.g]?`translate(${(7*Math.sin(t*1.3+i*1.7)).toFixed(1)} ${(7*Math.cos(t*1.1+i*2.3)).toFixed(1)})`:'')});
+tk.forEach(k=>{const f=FL[k.dataset.f],on=st[f[0]];k.style.display=on?'':'none';if(on){const u=(t/2.4+ +k.dataset.p)%1;k.setAttribute('transform',`translate(${f[2][0]+(f[3][0]-f[2][0])*u},${f[2][1]+(f[3][1]-f[2][1])*u})`);k.setAttribute('opacity',Math.sin(Math.PI*u).toFixed(2))}});
+pl.forEach((p,i)=>{const s=st[i?2:1]?1+.07*Math.sin(t*4+i):1;p.el.setAttribute('transform',`translate(${p.x},${p.y}) scale(${s})`)});
+requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+document.querySelectorAll('.pb').forEach(b=>b.addEventListener('click',()=>{const g=b.dataset.g;st[g]=st[g]?0:1;b.querySelector('.ic').setAttribute('d',st[g]?'M40,12h10v24h-10zM60,12h10v24h-10z':'M46,12L46,36L68,24Z')}));
+// tooltips
+const INFO={1:'<b>Channels: passive transport.</b><br>Channels form a pore through the membrane. Ions move through down their electrochemical gradient, so no energy is needed: Na⁺ enters the cell and K⁺ leaves it.',
+2:'<b>Na-K ATPase: primary active transport.</b><br>Uses energy from ATP to move 3 Na⁺ out of the cell and 2 K⁺ into it, against their gradients.',
+3:'<b>NaH exchanger: secondary active transport.</b><br>Na⁺ moves into the cell down its gradient, and the energy released moves H⁺ out against its gradient (antiport).',
+4:'<b>NaHCO₃ cotransporter: secondary active transport.</b><br>Na⁺ and HCO₃⁻ move together across the membrane in the same direction (symport).'};
+const tip=$('#tip'),wrap=$('#wrap');
+const show=(e,n)=>{tip.innerHTML=INFO[n];tip.style.display='block';const r=wrap.getBoundingClientRect();let x=e.clientX-r.left+16,y=e.clientY-r.top+16;x=Math.min(x,r.width-tip.offsetWidth-6);tip.style.left=Math.max(4,x)+'px';tip.style.top=y+'px'};
+document.querySelectorAll('.mk').forEach(m=>{const n=m.dataset.n;['pointerenter','pointermove','pointerdown'].forEach(ev=>m.addEventListener(ev,e=>show(e,n)));m.addEventListener('pointerleave',()=>tip.style.display='none')});
+document.addEventListener('pointerdown',e=>{if(!e.target.closest('.mk'))tip.style.display='none'});
+</script></body></html>
