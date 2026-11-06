@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Early Proximal Tubule: Solute Transport</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:#c9d4c8;font-family:Verdana,"DejaVu Sans",sans-serif;color:#1d2a1d}
+#wrap{max-width:1200px;margin:0 auto;padding:12px 12px 28px}
+#bar,#bar2{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 10px;align-items:center}
+#bar span,#bar2 span{font-size:13px;color:#4a5a48;margin-right:2px}
+.sb{--c:#555;border:2px solid var(--c);background:rgba(255,255,255,.35);color:#1d2a1d;border-radius:999px;padding:6px 14px;font:inherit;font-size:14px;cursor:pointer}
+.sb.on{background:var(--c);color:#fff}.sb.g{--c:#6b7a68}
+svg{display:block;width:100%;height:auto;user-select:none}
+#info{margin-top:10px;background:#bcc7b8;border-radius:10px;padding:12px 14px;font-size:15px;line-height:1.5;min-height:74px}
+</style></head><body>
+<div id="wrap"><div id="bar"><span>Solutes:</span></div>
+<svg id="fig" viewBox="0 0 1300 800" xmlns="http://www.w3.org/2000/svg" font-family="Verdana,'DejaVu Sans',sans-serif">
+<defs>
+<linearGradient id="gg" x1="0" x2="1"><stop offset="0" stop-color="#d0d0d0"/><stop offset="1" stop-color="#b8b8b8"/></linearGradient>
+<linearGradient id="cg" x1="0" x2="1"><stop offset="0" stop-color="#b5b5b5"/><stop offset=".8" stop-color="#f4f4f4"/><stop offset="1" stop-color="#fff"/></linearGradient>
+<clipPath id="pc"><rect x="30" y="60" width="1240" height="730" rx="18"/></clipPath>
+<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10Z" fill="#111"/></marker>
+</defs>
+<rect width="1300" height="800" fill="#c9d4c8"/>
+<text x="650" y="34" font-size="24" font-weight="bold" text-anchor="middle" fill="#111">EARLY PROXIMAL TUBULE</text>
+<g clip-path="url(#pc)"><rect x="30" y="60" width="260" height="730" fill="url(#gg)"/></g>
+<path d="M1115,172 L1115,770 A70,24 0 0 0 1255,770 L1255,172 Z" fill="#ffcccc"/>
+<ellipse cx="1185" cy="172" rx="70" ry="24" fill="#ffe3e3"/>
+<rect x="290" y="125" width="590" height="640" rx="40" fill="url(#cg)" stroke="#fff" stroke-width="7"/>
+<text x="585" y="100" font-size="20" text-anchor="middle" fill="#111">Cell of the early proximal tubule</text>
+<g font-size="20" fill="#111"><text x="48" y="92" font-weight="bold">Lumen</text><text x="1252" y="92" font-weight="bold" text-anchor="end">Blood</text></g>
+<g fill="#fff" stroke="#8a8a8a" stroke-width="2"><rect x="48" y="104" width="86" height="32" rx="3"/><rect x="1168" y="104" width="84" height="32" rx="3"/></g>
+<g font-size="19" fill="#111" text-anchor="middle" dominant-baseline="central"><text x="91" y="121">−4 mV</text><text x="1210" y="121">0 mV</text></g>
+<g id="dyn"></g><g id="fx"></g></svg>
+<div id="bar2" style="margin:10px 0 0"><span>Drugs and disease:</span></div>
+<div id="info"></div></div>
+<script>
+const $=s=>document.querySelector(s);
+const TK={Na:['Na⁺','#8d8a1b'],K:['K⁺','#d62d20'],Glu:['Glucose','#2a8fa0'],AA:['Amino acid','#c2751f'],PLC:['Phosphate, lactate, citrate','#6a5aa8'],H:['H⁺','#2b4fd6'],B:['HCO₃⁻','#b8505e'],OAC:['Organic anions and cations','#4f7d3a']};
+const SH={Na:'Na⁺',K:'K⁺',Glu:'Glc',AA:'AA',PLC:'P/L/C',H:'H⁺',B:'HCO₃⁻',OAC:'OA⁻/OC⁺'};
+const INFO={Na:'<b>Na⁺</b> enters the cell from the lumen by four routes: cotransport with glucose, with amino acids, with phosphate, lactate or citrate, and in exchange for H⁺. The Na⁺–K⁺ ATPase on the blood side pumps it back out using ATP, which keeps intracellular Na⁺ low and powers all of this coupled transport.',
+K:'<b>K⁺</b> is taken up from the blood side by the Na⁺–K⁺ ATPase, which moves 3 Na⁺ out for every 2 K⁺ in (primary active transport).',
+Glu:'<b>Glucose</b> enters with Na⁺ on a cotransporter (secondary active transport, energy from the Na⁺ gradient) and leaves toward the blood down its gradient by facilitated diffusion.',
+AA:'<b>Amino acids</b> follow the same pattern as glucose: Na⁺-coupled cotransport into the cell, then carrier-mediated exit across the blood-side membrane.',
+PLC:'<b>Phosphate, lactate and citrate</b> enter on Na⁺-coupled cotransporters at the lumen side and leave across the blood-side membrane by carriers.',
+H:'<b>H⁺</b> is secreted into the lumen by the Na⁺/H⁺ exchanger: Na⁺ moves in down its gradient and H⁺ moves out (secondary active transport). The H⁺ comes from the cell: carbonic anhydrase (CA) converts CO₂ + H₂O to H₂CO₃, which dissociates into H⁺ and HCO₃⁻.',
+B:'<b>HCO₃⁻</b> leaves the cell across the blood-side membrane into the blood. Inside the cell, carbonic anhydrase (CA) converts CO₂ + H₂O to H₂CO₃, which dissociates into HCO₃⁻ and the H⁺ that is secreted into the lumen.'};
+INFO.OAC='<b>Organic anions and cations</b> are secreted from the blood into the tubular fluid. They cross the cell from the blood side to the lumen through their own transporters, which are shown here as a single simplified arrow.';
+INFO.DX='<b>Diamox (acetazolamide)</b> inhibits carbonic anhydrase (CA), on the luminal brush border and inside the proximal tubule cell. Less H⁺ is generated, so Na⁺/H⁺ exchange and HCO₃⁻ reabsorption fall. Bicarbonate, Na⁺ and water are lost in the urine (alkaline urine, mild diuresis), and a hyperchloremic (normal anion gap) metabolic acidosis develops.';
+INFO.MAN='<b>Mannitol</b> is freely filtered but not reabsorbed, so it stays in the tubular fluid and holds water in the lumen by osmosis. Water reabsorption falls, luminal Na⁺ becomes diluted, and less Na⁺ is reabsorbed, producing an osmotic diuresis. It acts in the proximal tubule and the loop of Henle.';
+INFO.FAN='<b>Fanconi syndrome</b> is a generalized failure of proximal tubule reabsorption. Often the Na⁺ gradient or the cell\'s energy supply is impaired, so Na⁺-coupled transport falls across the board. Glucose (with normal blood glucose), amino acids, phosphate and bicarbonate are lost in the urine, giving glucosuria, aminoaciduria, phosphaturia and proximal (type 2) renal tubular acidosis. Causes include cystinosis, Wilson disease, Dent disease, multiple myeloma light chains, and drugs such as tenofovir or ifosfamide.';
+const DEF='Select one or more solutes above to animate their route across the cell. Other pathways fade so you can follow each one.';
+const SP=[['s0','#e2f2f4','#5fb0bd'],['s1','#f7e3c6','#d9a468'],['s2','#dcd6ef','#8f84bb'],['s3','#f4d8db','#d58f98'],['s4','#e4f3de','#8fc486']];
+$('defs').insertAdjacentHTML('beforeend',SP.map(([i,a,b])=>`<radialGradient id="${i}" cx=".35" cy=".3" r=".85"><stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></radialGradient>`).join(''));
+const R=[{y:330,s:'s0',a:'Glu',t:['Glucose'],o:'Glu',L:'Na⁺–glucose cotransporter',Rn:'Glucose carrier (facilitated diffusion)'},
+{y:450,s:'s1',a:'AA',t:['Amino acid'],o:'AA',L:'Na⁺–amino acid cotransporter',Rn:'Amino acid carrier'},
+{y:570,s:'s2',a:'PLC',t:['Phosphate, lactate,','or citrate'],o:'PLC',L:'Na⁺–phosphate/lactate/citrate cotransporter',Rn:'Phosphate/lactate/citrate carrier'},
+{y:690,s:'s3',a:'H',t:['H⁺'],o:'B',t2:['HCO₃⁻'],L:'Na⁺/H⁺ exchanger',Rn:'HCO₃⁻ exit pathway'}];
+const arrow=(x1,y,x2)=>`<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="#111" stroke-width="2.4" marker-end="url(#ah)"/>`;
+const txt=(t,x,y)=>`<text x="${x}" y="${y}" font-size="20" fill="#111" dominant-baseline="central">${t}</text>`;
+const el=(k,inner)=>`<g class="el" data-k="${k}">${inner}</g>`;
+const tp=(k,x,y,fill,name,extra='')=>`<g class="el tp" data-k="${k}" data-x="${x}" data-y="${y}" transform="translate(${x},${y})"><title>${name}</title><circle r="34" fill="url(#${fill})" stroke="#555" stroke-opacity=".5" stroke-width="2"/>${extra}</g>`;
+let h='';
+R.forEach(r=>{
+h+=el('Na '+r.a,arrow(225,r.y-26,355)+txt('Na⁺',366,r.y-26));
+h+=el(r.a,(r.a=='H'?arrow(355,r.y+26,225):arrow(225,r.y+26,355))+r.t.map((s,i)=>txt(s,366,r.y+26+i*22)).join(''));
+h+=el(r.o,arrow(815,r.y-26,945)+(r.t2||r.t).map((s,i)=>txt(s,957,r.y-26+i*22)).join(''));
+});
+h+=el('Na',arrow(815,189,945)+txt('Na⁺',957,189))+el('K',arrow(945,241,815)+txt('K⁺',957,241));
+const lab=t=>t?`<text y="1" font-size="17" font-weight="bold" fill="#1d2a1d" text-anchor="middle" dominant-baseline="central" pointer-events="none">${t}</text>`:'';
+R.forEach(r=>{h+=tp('Na '+r.a,290,r.y,r.s,r.L,lab({Glu:'SGLT',H:'NHE'}[r.a]))+tp(r.o,880,r.y,r.s,r.Rn,lab({Glu:'GLUT'}[r.o]))});
+h+=tp('Na K',880,215,'s4','Na⁺–K⁺ ATPase','<text y="1" font-size="18" font-weight="bold" fill="#2a4a9a" text-anchor="middle" dominant-baseline="central">ATP</text>');
+// flows
+const FL=[];
+R.forEach(r=>{FL.push(['Na',150,r.y-26,430,r.a]);FL.push([r.a,r.a=='H'?430:150,r.y+26,r.a=='H'?150:430]);FL.push([r.o,780,r.y-26,1060])});
+FL.push(['Na',780,189,1060]);FL.push(['K',1060,241,780]);FL.push(['OAC',1185,776,130]);
+FL.forEach((f,i)=>{[0,.5].forEach(p=>{const l=SH[f[0]],w=Math.max(42,l.length*10+18);h+=`<g class="tk" data-f="${i}" data-p="${p}" style="display:none"><rect x="${-w/2}" y="-13" width="${w}" height="26" rx="13" fill="${TK[f[0]][1]}"/><text font-size="15" font-weight="bold" fill="#fff" text-anchor="middle" dominant-baseline="central">${l}</text></g>`})});
+// intracellular CO2 / carbonic anhydrase pathway
+const ctr=(t,x,y)=>`<text x="${x}" y="${y}" font-size="20" fill="#111" text-anchor="middle" dominant-baseline="central">${t}</text>`;
+const vline=(x,y1,y2)=>`<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="#111" stroke-width="2.4" marker-end="url(#ah)"/>`;
+const dash=(d)=>`<path d="${d}" fill="none" stroke="#111" stroke-width="2.2" stroke-dasharray="7 5" marker-end="url(#ah)"/>`;
+h+=el('H B',ctr('CO₂+H₂O',585,400)+vline(585,420,492)+txt('CA',600,456)+ctr('H₂CO₃',585,525)+vline(585,545,605)+ctr('H⁺ + HCO₃⁻',585,640));
+h+=el('H',dash('M510 650 L410 700'));
+h+=el('B',dash('M660 642 L735 642 L735 664 L805 664'));
+// direction of tubular fluid flow
+h+=el('OAC',arrow(1185,776,130)+'<text x="896" y="757" font-size="17" fill="#111" dominant-baseline="central">Organic anions and cations</text>');
+$('#dyn').innerHTML=h;
+$('#fx').innerHTML=`<g class="fx" data-k="DX" style="display:none"><line x1="588" y1="443" x2="618" y2="469" stroke="#c0281f" stroke-width="5"/><line x1="618" y1="443" x2="588" y2="469" stroke="#c0281f" stroke-width="5"/><text x="642" y="456" font-size="16" font-weight="bold" fill="#c0281f" dominant-baseline="central">Diamox blocks CA</text><text x="425" y="722" font-size="26" font-weight="bold" fill="#c0281f" dominant-baseline="central">↓</text><text x="1032" y="664" font-size="26" font-weight="bold" fill="#c0281f" dominant-baseline="central">↓</text></g><g class="fx" data-k="MAN" style="display:none"><g class="mp" data-x="62" data-y="250"><circle r="15" fill="#8b9aa8" stroke="#4a5866" stroke-width="2"/><text y="1" font-size="14" font-weight="bold" fill="#fff" text-anchor="middle" dominant-baseline="central">M</text></g><g class="mp" data-x="110" data-y="380"><circle r="15" fill="#8b9aa8" stroke="#4a5866" stroke-width="2"/><text y="1" font-size="14" font-weight="bold" fill="#fff" text-anchor="middle" dominant-baseline="central">M</text></g><g class="mp" data-x="62" data-y="500"><circle r="15" fill="#8b9aa8" stroke="#4a5866" stroke-width="2"/><text y="1" font-size="14" font-weight="bold" fill="#fff" text-anchor="middle" dominant-baseline="central">M</text></g><g class="mp" data-x="110" data-y="640"><circle r="15" fill="#8b9aa8" stroke="#4a5866" stroke-width="2"/><text y="1" font-size="14" font-weight="bold" fill="#fff" text-anchor="middle" dominant-baseline="central">M</text></g><g class="mp" data-x="62" data-y="720"><circle r="15" fill="#8b9aa8" stroke="#4a5866" stroke-width="2"/><text y="1" font-size="14" font-weight="bold" fill="#fff" text-anchor="middle" dominant-baseline="central">M</text></g><text x="40" y="165" font-size="15" font-weight="bold" fill="#33404c" dominant-baseline="central">Mannitol is not reabsorbed</text><text x="40" y="185" font-size="15" fill="#33404c" dominant-baseline="central">and holds water in lumen</text></g><g class="fx" data-k="FAN" style="display:none"><line x1="274" y1="314" x2="306" y2="346" stroke="#c0281f" stroke-width="5"/><line x1="306" y1="314" x2="274" y2="346" stroke="#c0281f" stroke-width="5"/><line x1="274" y1="434" x2="306" y2="466" stroke="#c0281f" stroke-width="5"/><line x1="306" y1="434" x2="274" y2="466" stroke="#c0281f" stroke-width="5"/><line x1="274" y1="554" x2="306" y2="586" stroke="#c0281f" stroke-width="5"/><line x1="306" y1="554" x2="274" y2="586" stroke="#c0281f" stroke-width="5"/><line x1="274" y1="674" x2="306" y2="706" stroke="#c0281f" stroke-width="5"/><line x1="306" y1="674" x2="274" y2="706" stroke="#c0281f" stroke-width="5"/><text x="40" y="205" font-size="15" font-weight="bold" fill="#c0281f" dominant-baseline="central">Reabsorption fails:</text><text x="40" y="225" font-size="15" fill="#c0281f" dominant-baseline="central">solutes are lost in urine</text></g>`;
+
+// buttons
+const act=new Set();let last=null;const bar=$('#bar');
+const FX={DX:['Diamox (acetazolamide)','#a0302a'],MAN:['Mannitol','#5a6b7d'],FAN:['Fanconi syndrome','#7a3b8c']};
+const mk=(par,k,name,col)=>{const b=document.createElement('button');b.className='sb';b.dataset.k=k;b.style.setProperty('--c',col);b.textContent=name;b.onclick=()=>{if(act.has(k))act.delete(k);else{act.add(k);last=k}if(!act.has(last))last=[...act].pop()||null;upd()};par.appendChild(b)};
+Object.keys(TK).forEach(k=>mk(bar,k,TK[k][0],TK[k][1]));
+Object.keys(FX).forEach(k=>mk($('#bar2'),k,FX[k][0],FX[k][1]));
+[['All',()=>{Object.keys(TK).forEach(k=>act.add(k));last='Na'}],['Clear',()=>{act.clear();last=null}]].forEach(([n,f])=>{const b=document.createElement('button');b.className='sb g';b.textContent=n;b.onclick=()=>{f();upd()};bar.appendChild(b)});
+function upd(){const any=[...act].some(k=>TK[k]);document.querySelectorAll('.fx').forEach(e=>{e.style.display=act.has(e.dataset.k)?'':'none'});document.querySelectorAll('.el').forEach(e=>{const m=e.dataset.k.split(' ').some(k=>act.has(k));e.setAttribute('opacity',any&&!m?.28:1)});
+document.querySelectorAll('.sb[data-k]').forEach(b=>b.classList.toggle('on',act.has(b.dataset.k)));
+$('#info').innerHTML=last?INFO[last]+(act.size>1?`<br><span style="font-size:13px;opacity:.75">Showing ${act.size} items; the text describes the one you picked last.</span>`:''):DEF}
+const tps=[...document.querySelectorAll('.tp')],tks=[...document.querySelectorAll('.tk')];
+function loop(ts){const t=ts/1000;
+tks.forEach(k=>{const f=FL[k.dataset.f],on=act.has(f[0])||(f[4]&&act.has(f[4]));k.style.display=on?'':'none';if(on){const u=(t/2.6+ +k.dataset.p)%1;k.setAttribute('transform',`translate(${f[1]+(f[3]-f[1])*u},${f[2]})`);k.setAttribute('opacity',Math.sin(Math.PI*u).toFixed(2))}});
+document.querySelectorAll('.mp').forEach((m,i)=>m.setAttribute('transform',`translate(${m.dataset.x},${(+m.dataset.y+6*Math.sin(t*2+i)).toFixed(1)})`));
+tps.forEach(p=>{const on=p.dataset.k.split(' ').some(k=>act.has(k)),s=on?1+.09*Math.sin(t*4):1;p.setAttribute('transform',`translate(${p.dataset.x},${p.dataset.y}) scale(${s.toFixed(3)})`)});
+requestAnimationFrame(loop)}
+upd();requestAnimationFrame(loop);
+</script></body></html>
